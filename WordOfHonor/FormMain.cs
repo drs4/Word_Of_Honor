@@ -20,7 +20,7 @@ namespace WordOfHonor
         public FormMain()
         {
             InitializeComponent();
-            tmrLong.Interval = rand.Next(1, 4) * 30 * 60000;
+            tmrLong.Interval = (rand.Next(4) * 2 + 1) * 30 * 60000;
 
             RegRun(Application.ExecutablePath, true);
 
@@ -143,7 +143,7 @@ namespace WordOfHonor
 
                 tmrShort.Enabled = false;
                 tmrLong.Enabled = true;
-                tmrLong.Interval = rand.Next(1, 4) * 30 * 60000;
+                tmrLong.Interval = (rand.Next(4) * 2 + 1) * 30 * 60000;
 
             }
         }
@@ -168,7 +168,7 @@ namespace WordOfHonor
         {
             tmrShort.Enabled = false;
             tmrLong.Enabled = true;
-            tmrLong.Interval = rand.Next(1, 4) * 30 * 60000;
+            tmrLong.Interval = (rand.Next(4) * 2 + 1) * 30 * 60000;
             ShowQuote();
 
             this.Hide();
