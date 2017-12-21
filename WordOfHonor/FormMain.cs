@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SQLite;
@@ -21,7 +22,6 @@ namespace WordOfHonor
             InitializeComponent();
             tmrLong.Interval = rand.Next(1, 4) * 30 * 60000;
 
-            ShowQuote();
             RegRun(Application.ExecutablePath, true);
 
         }
@@ -67,11 +67,20 @@ namespace WordOfHonor
             }
         }
 
+        public void UpdateConnectionString()
+        {
+            //when called on startup, the connectionStrings should be a full path
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
+            connectionStringsSection.ConnectionStrings["MyDBContext"].ConnectionString = "Data Source=" + Application.StartupPath + "\\QuotesDB.sqlite";
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("connectionStrings");
+        }
 
 
         private Quote GetQuote()
         {
-            
+            UpdateConnectionString();
             using (var db = new MyContext())
             {
                 var quotes = db.Quotes.ToList();
@@ -168,14 +177,16 @@ namespace WordOfHonor
 
         private void itmRun_Click(object sender, EventArgs e)
         {
-            if (itmRun.Checked == false)
+            if (itmRun.Checked)
             {
                 RegRun("", false);
+                itmRun.Checked = false;
 
             }
             else
             {
                 RegRun(Application.ExecutablePath, true);
+                itmRun.Checked = true;
             }
 
         }
@@ -194,6 +205,11 @@ namespace WordOfHonor
             this.Height = rch.Height + 40;
 
             txtText.Dock = DockStyle.Fill;
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            ShowQuote();
         }
     }
 }

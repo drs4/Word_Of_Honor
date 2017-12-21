@@ -166,6 +166,7 @@
             this.Text = "Word Of Honor";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.mainMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
